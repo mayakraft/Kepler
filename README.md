@@ -12,7 +12,7 @@ double[] calculateLocationOfPlanet(int planet, float time)
 
 returns an array `double, double, double` for X, Y, Z position in the J2000 ecliptic plane with the equinox aligned to the X axis.
 
-`int planet` 0=Mercury 2=Venus 3=Earth/Moon Barycenter… 7=Neptune
+`int planet` 0=Mercury 1=Venus 2=Earth/Moon Barycenter… 7=Neptune
 
 `float time` in centuries after the year 2000. 
 
