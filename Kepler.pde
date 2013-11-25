@@ -21,8 +21,11 @@ float[] planetsY = new float[9];
 float[] planetsZ = new float[9];
 int[] zindex = {0,1,2,3,4,5,6,7,8};  // for screen draw order
 // mouse
-int speed = 0;  // for mouse click. it's really a boolean, fast or slow
-float ZOOM = 86.0;   // initial zoom fits the 4 inner terrestrial planets
+float autoZoomDistance;
+int zoomDirection;
+int state = 0;  // changing zoom
+float speed = 0;  // for mouse click. it's really a boolean, fast or slow
+float ZOOM = 126.0;   // initial zoom fits the 4 inner terrestrial planets
 int SIZE = (int)( (pow(ZOOM,.333)*4) );   // planet/sun size
 
 // the format of this number is: centuries after the year 2000
@@ -69,12 +72,31 @@ void draw(){
       sun = true;
     }
     fill(colors[3*zindex[i]+0],colors[3*zindex[i]+1],colors[3*zindex[i]+2]);
-    if(centerX1 + planetsY[zindex[i]]*ZOOM < WIDTH)  // prevent overlap from the 1st screen to the 2nd
-      ellipse(centerX1 + planetsX[zindex[i]]*ZOOM, centerY1 + planetsY[zindex[i]]*ZOOM, SIZE, SIZE);
-    ellipse(centerX2 + planetsX[zindex[i]]*ZOOM, centerY2 + planetsZ[zindex[i]]*ZOOM, SIZE, SIZE);
+    if(centerX1 - planetsY[zindex[i]]*ZOOM < WIDTH)  // prevent overlap from the 1st screen to the 2nd
+      ellipse(centerX1 + planetsX[zindex[i]]*ZOOM, centerY1 - planetsY[zindex[i]]*ZOOM, SIZE, SIZE);
+    ellipse(centerX2 + planetsX[zindex[i]]*ZOOM, centerY2 - planetsZ[zindex[i]]*ZOOM, SIZE, SIZE);
   }
-  if(animate)
-    time = time + .00001 + .00175*speed;
+  if(animate){
+    time = time + .00001;
+  }
+  if(state == 1){
+    if(zoomDirection < 0){
+      speed-=.2;
+      if(speed < 0){
+        speed = 0;
+        state = 0;
+      }
+    }
+    else {
+      speed+=.2;
+      if(speed > PI){
+        speed = PI;
+        state = 0;
+      }
+    }
+    ZOOM = 5.5 + autoZoomDistance * pow((1+cos(speed))*.5,2);
+    SIZE = (int)( (pow(ZOOM,.333)*4) );
+  }
 }
 
 void sortZIndexes(){
@@ -103,8 +125,19 @@ void mouseWheel(MouseEvent event) {
 }
 
 void mouseClicked(){
-  if(speed == 0) speed = 1;
-  else speed = 0;
+  if(state == 0){
+    if(ZOOM < 6){
+      autoZoomDistance = 126-ZOOM;
+      zoomDirection = -1;
+      speed = PI;
+    }
+    else{
+      autoZoomDistance = ZOOM-5.5;
+        zoomDirection = 1;
+      speed = 0;
+    }
+    state = 1;
+  }
 }
 
 // Planet locations in reference to the J2000 ecliptic plane, with the X-axis aligned toward the equinox

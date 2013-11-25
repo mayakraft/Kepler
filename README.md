@@ -23,3 +23,5 @@ returns an array `double, double, double` for X, Y, Z position in the J2000 ecli
 ***
 
 NASA JPL (sec 8.10): [http://iau-comm4.jpl.nasa.gov/XSChap8.pdf](http://iau-comm4.jpl.nasa.gov/XSChap8.pdf)
+
+[http://ssd.jpl.nasa.gov/?planet_pos](http://ssd.jpl.nasa.gov/?planet_pos) information on margin of error
