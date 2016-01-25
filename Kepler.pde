@@ -6,8 +6,9 @@
 //
 // NOTE: this implementation is valid for the time interval 1800 AD - 2050 AD, but will run outside these times
 
-int WIDTH = 512;
-int HEIGHT = 768;
+int WINDOW_SIZE = 460;
+int WIDTH = WINDOW_SIZE;
+int HEIGHT = (int)(WINDOW_SIZE * 1.5);
 int centerX1 = (int)(WIDTH*.5);
 int centerY1 = (int)(WIDTH*.5);
 int centerX2 = (int)(WIDTH*.5);
@@ -30,16 +31,18 @@ int SIZE = (int)( (pow(ZOOM,.333)*4) );   // planet/sun size
 
 // the format of this number is: centuries after the year 2000
 float time = .138767; // mid November 2013
+//float time = -499384800.000000 / 60.0 / 60.0 / 24.0 / 365.0 / 100.0;
+
 // time = (year-2000)/100 + day_of_the_year/36525
 // where day_of_the_year would be 42 for February 11th.
 
 boolean animate = true;   // turn on animation. time moves quickly
 
 void setup(){
-  size(WIDTH,HEIGHT);
+  size(460,690); // copy in values from WIDTH and HEIGHT here
   stroke(0);
   strokeWeight(0); 
-  fill(255);  
+  fill(255);
 }
 
 void draw(){
@@ -51,6 +54,12 @@ void draw(){
     planetsZ[i] = (float)position[2];
   }
   sortZIndexes();
+
+//  double angles[] = new double[9];
+//  for(int i = 0; i < 9; i++){
+//    angles[i] = atan2(planetsY[i], planetsX[i] ) / PI * 180 - 161.44873046875 + 360.0;
+//    println(i + ": " + angles[i]);
+//  }
   
   // draw
   background(255);
